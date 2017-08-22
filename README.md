@@ -1,4 +1,4 @@
-# scraper for sslproxies.org
+# scraper framework for various open proxy list networks
 ---
 ## Sample output:
 ~~~~
