@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-# Phanes 2017-08-21
+# Phanes 2017
 
 from lxml import html
 import requests
 
 # Synopsis
-# Retrieves 99 proxies from sslproxies.org
+# Retrieves up to 99 US proxies from sslproxies.org
 
 def Main():
 
@@ -17,9 +17,12 @@ def Main():
 
     ips = tree.xpath('//*[@id="proxylisttable"]/tbody/tr/td[1]')
     ports = tree.xpath('//*[@id="proxylisttable"]/tbody/tr/td[2]')
+    country_codes = tree.xpath('//*[@id="proxylisttable"]/tbody/tr/td[3]')
+
 
     for idx, val in enumerate(ips):
-        print("{}:{}".format(ips[idx].text, ports[idx].text))
+        if country_codes[idx].text == "US":
+            print("{}:{}".format(ips[idx].text, ports[idx].text))
 
 if __name__ == "__main__":
     Main()
