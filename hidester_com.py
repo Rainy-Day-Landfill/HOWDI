@@ -28,7 +28,7 @@ def Main():
     json_proxies = json.loads( raw_proxy_list )
     for proxy in json_proxies:
         # print(proxy)
-        if proxy['ping'] < 1000 and proxy['country'] == 'UNITED STATES':
+        if proxy['ping'] < 1000 and proxy['country'] == 'UNITED STATES' and proxy['type'] == 'http':
             print("{}:{}".format(proxy['IP'], proxy['PORT']))
 
 if __name__ == "__main__":
