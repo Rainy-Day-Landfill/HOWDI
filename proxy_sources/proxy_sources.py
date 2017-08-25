@@ -108,7 +108,7 @@ def get_classes():
         )
     ]
 
-# No bitch, you really don't know wtf you're talking about.
+# Reflection example?
 class ScraperPlexor():
     @staticmethod
     def get_proxies():
