@@ -13,7 +13,7 @@ for proxy in ScraperPlexor.get_proxies():
 # de-dupe
 proxy_list = list( set(proxy_list) )
 
-print("[II]\t{} total proxies eligible.".format(len(proxy_list)))
+print("[II] {} total proxies after filtering for US geo..".format(len(proxy_list)))
 # async checks of each result so that the final list only has
 # confirmed proxies.  if request takes longer than 1 second it will
 # not be added to the list.
