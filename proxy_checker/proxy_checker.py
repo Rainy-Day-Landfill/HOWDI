@@ -19,7 +19,7 @@ class ProxyChecker():
         for proxy in proxy_list:
             rs.append(  grequests.get( random.choice(IFCONFIG_CANDIDATES), proxies={ "http": proxy, "https": proxy}, timeout=1 ) )
 
-        print("\nChecking proxies.\n")
+        print("\nChecking proxies.  All valid proxies listed below:\n")
 
         working_proxies = []
         # send them all at the same time
