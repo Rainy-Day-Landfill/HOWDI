@@ -2,18 +2,18 @@
 from proxy_sources.proxy_sources import ScraperPlexor
 from proxy_checker.proxy_checker import ProxyChecker
 
-# create a bucket for later
+# create a bucket to store
 proxy_list = list()
 
-# send out the minion
-# request is not async yet but return is.
+#
 for proxy in ScraperPlexor.get_proxies():
-    print( proxy )
+    # print( proxy )
     proxy_list.append(proxy)
 
 # de-dupe
 proxy_list = list( set(proxy_list) )
 
+print("[II]\t{} total proxies eligible.".format(len(proxy_list)))
 # async checks of each result so that the final list only has
 # confirmed proxies.  if request takes longer than 1 second it will
 # not be added to the list.

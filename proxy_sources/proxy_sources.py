@@ -4,17 +4,65 @@ from lxml import html
 import random
 import string
 import json
+from urllib.parse import urlsplit
+
+
+class awmproxy_net:
+    @staticmethod
+    def get_proxies():
+        proxy_source_url = "http://awmproxy.net/freeproxy.php"
+        source_identifier = urlsplit(proxy_source_url).netloc
+
+        # expires in 2065 AD
+        cookie_jar = {"freeproxy_key": "0494348348"}
+
+        headers = {
+            'X-LOG-SPAM': 'CONTACT CHRIS PUNCHES AT PUNCHES.CHRIS@GMAIL.COM FOR YOUR SOLUTION NEEDS',
+            'DONATE-BTC-TO': '1Q9GG6JS5mwX3fDvA2S2uB3BRLer9J6EkW',
+            'X-ADMIN-NOTICE': 'Please get rid of your retarded captcha, it is useless.'
+        }
+
+
+        print("[II] [{}]\tFetching proxy list.".format(source_identifier))
+
+        page = requests.get(proxy_source_url, headers=headers, cookies=cookie_jar)
+        tree = html.fromstring(page.content)
+
+        ips = tree.xpath('//*[@class="podbor"]/tr/td[2]')
+        country = tree.xpath('//*[@class="podbor"]/tr/td[3]')
+
+
+        print("[II] [{}]\tFound {} proxies.".format(source_identifier, len(ips)))
+
+        for idx, val in enumerate(ips):
+            if ips[idx].text is not None:
+                proxy = ips[idx].text
+                proxy = proxy.rstrip().strip()
+            else:
+                proxy = ""
+
+            if country[idx].text is not None:
+                this_country = country[idx].text
+                this_country = this_country.rstrip().strip()
+            else:
+                this_country = ""
+
+            if this_country == "United States":
+                # print("'{}':'{}'".format(this_country, proxy))
+                yield proxy
 
 
 class sslproxies_org():
     @staticmethod
     def get_proxies():
         proxy_source_url = "https://www.sslproxies.org"
+        source_identifier = urlsplit(proxy_source_url).netloc
 
         headers = {
             'X-LOG-SPAM': 'CONTACT CHRIS PUNCHES AT PUNCHES.CHRIS@GMAIL.COM FOR YOUR SOLUTION NEEDS',
             'DONATE-BTC-TO': '1Q9GG6JS5mwX3fDvA2S2uB3BRLer9J6EkW'
         }
+        print("[II] [{}]\tFetching proxy list.".format(source_identifier))
 
         page = requests.get(proxy_source_url, headers=headers)
         tree = html.fromstring(page.content)
@@ -22,6 +70,7 @@ class sslproxies_org():
         ips = tree.xpath('//*[@id="proxylisttable"]/tbody/tr/td[1]')
         ports = tree.xpath('//*[@id="proxylisttable"]/tbody/tr/td[2]')
         country_codes = tree.xpath('//*[@id="proxylisttable"]/tbody/tr/td[3]')
+        print("[II] [{}]\tFound {} proxies.".format(source_identifier, len(ips)))
 
         for idx, val in enumerate(ips):
             if country_codes[idx].text == "US":
@@ -33,6 +82,7 @@ class hidemy_name():
     def get_proxies():
         proxy_source_url = "https://hidemy.name/en/proxy-list/?country=US&maxtime=1000&type=hs#list"
         user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.104 Safari/537.36"
+        source_identifier = urlsplit(proxy_source_url).netloc
 
         headers = {
             'User-Agent': user_agent,
@@ -41,15 +91,14 @@ class hidemy_name():
             'DONATE-BTC-TO': '1Q9GG6JS5mwX3fDvA2S2uB3BRLer9J6EkW'
         }
 
-
-        #print("Fetching proxies from {}".format(proxy_source_url))
+        print("[II] [{}]\tFetching proxy list.".format(source_identifier))
         page = requests.get(proxy_source_url, headers=headers)
         tree = html.fromstring(page.content)
 
         ips = tree.xpath('//*[@id="content-section"]/section[1]/div/table/tbody/tr/td[1]')
         ports = tree.xpath('//*[@id="content-section"]/section[1]/div/table/tbody/tr/td[2]')
 
-        #print("Found {} proxies.".format(len(ips)))
+        print("[II] [{}]\tFound {} proxies.".format(source_identifier, len(ips)))
 
         for idx, val in enumerate(ips):
             yield "{}:{}".format(ips[idx].text, ports[idx].text)
@@ -63,6 +112,7 @@ class hidester_com():
             openssl_revision=random.choice(string.ascii_lowercase), zlib_revision=random.randint(2, 6))
 
         proxy_source_url = "https://hidester.com/proxydata/php/data.php?mykey=csv&gproxy=2"
+        source_identifier = urlsplit(proxy_source_url).netloc
 
         headers = {
             'User-agent': user_agent,
@@ -71,14 +121,16 @@ class hidester_com():
             'X-LOG-SPAM': 'CONTACT CHRIS PUNCHES AT PUNCHES.CHRIS@GMAIL.COM FOR YOUR SOLUTION NEEDS',
             'DONATE-BTC-TO': '1Q9GG6JS5mwX3fDvA2S2uB3BRLer9J6EkW'
         }
+        print("[II] [{}]\tFetching proxy list.".format(source_identifier))
 
-        #print("Fetching proxies from {}".format(proxy_source_url))
+        # print("Fetching proxies from {}".format(proxy_source_url))
         page = requests.get(proxy_source_url, headers=headers, verify=True)
         raw_proxy_list = str(page.content, 'utf-8')
         json_proxies = json.loads(raw_proxy_list)
 
         # not accurate -- should be presenting instead the number of filtered ones
-        #print("Found {} proxies.".format(len(json_proxies)))
+        # print("Found {} proxies.".format(len(json_proxies)))
+        print("[II] [{}]\tFound {} proxies.".format(source_identifier, len(json_proxies)))
 
         for proxy in json_proxies:
             # print(proxy)
@@ -91,6 +143,7 @@ class proxy_ip_list_com():
     def get_proxies():
         proxy_source_url = "http://proxy-ip-list.com/free-usa-proxy-ip.html"
         user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.104 Safari/537.36"
+        source_identifier = urlsplit(proxy_source_url).netloc
 
         headers = {
             'User-Agent': user_agent,
@@ -98,15 +151,17 @@ class proxy_ip_list_com():
             'X-LOG-SPAM': 'CONTACT CHRIS PUNCHES AT PUNCHES.CHRIS@GMAIL.COM FOR YOUR SOLUTION NEEDS',
             'DONATE-BTC-TO': '1Q9GG6JS5mwX3fDvA2S2uB3BRLer9J6EkW'
         }
+        print("[II] [{}]\tFetching proxy list.".format(source_identifier))
 
-        #print("Fetching proxies from {}".format(proxy_source_url))
+        # print("Fetching proxies from {}".format(proxy_source_url))
         page = requests.get(proxy_source_url, headers=headers)
 
         tree = html.fromstring(page.content)
 
         proxies = tree.xpath('/html/body/table/tbody/tr/td[1]')
 
-        #print("Found {} proxies.".format(len(proxies)))
+        # print("Found {} proxies.".format(len(proxies)))
+        print("[II] [{}]\tFound {} proxies.".format(source_identifier, len(proxies)))
 
         for idx, val in enumerate(proxies):
             yield "{}".format(proxies[idx].text)

@@ -22,11 +22,11 @@ class ProxyChecker():
         print("\nChecking proxies.  All valid proxies listed below:\n")
 
         working_proxies = []
-        # send them all at the same time
+        # send a few at a time in sets of size "threads"
         for response in grequests.imap(rs, size=threads):
             # raw_text = str( response.content, 'utf-8')
             if response.status_code == 200:
-                this_proxy, junkdata = response.connection.proxy_manager.popitem()
+                this_proxy = next(iter(response.connection.proxy_manager))
 
                 parsed = urlsplit( this_proxy ).netloc
                 working_proxies.append( parsed )
