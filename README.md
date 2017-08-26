@@ -295,7 +295,7 @@
 98.182.126.155:80
 98.191.98.146:3128
 
-Checking proxies.
+Checking proxies.  All valid proxies listed below:
 
 216.56.48.118:9000
 104.236.166.203:8080
