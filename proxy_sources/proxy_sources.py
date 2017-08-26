@@ -11,19 +11,22 @@ class sslproxies_org():
     def get_proxies():
         proxy_source_url = "https://www.sslproxies.org"
 
-        #print("Fetching proxies from {}".format(proxy_source_url))
-        page = requests.get(proxy_source_url)
+        headers = {
+            'X-LOG-SPAM': 'CONTACT CHRIS PUNCHES AT PUNCHES.CHRIS@GMAIL.COM FOR YOUR SOLUTION NEEDS',
+            'DONATE-BTC-TO': '1Q9GG6JS5mwX3fDvA2S2uB3BRLer9J6EkW'
+        }
+
+        page = requests.get(proxy_source_url, headers=headers)
         tree = html.fromstring(page.content)
 
         ips = tree.xpath('//*[@id="proxylisttable"]/tbody/tr/td[1]')
         ports = tree.xpath('//*[@id="proxylisttable"]/tbody/tr/td[2]')
         country_codes = tree.xpath('//*[@id="proxylisttable"]/tbody/tr/td[3]')
 
-        #print("Found {} proxies.".format(len(ips)))
-
         for idx, val in enumerate(ips):
             if country_codes[idx].text == "US":
                 yield "{}:{}".format(ips[idx].text, ports[idx].text)
+
 
 class hidemy_name():
     @staticmethod
@@ -33,7 +36,9 @@ class hidemy_name():
 
         headers = {
             'User-Agent': user_agent,
-            'Reason': 'Stop charging for API access you assholes.'
+            'X-Reason': 'Stop charging for API access you assholes.',
+            'X-LOG-SPAM': 'CONTACT CHRIS PUNCHES AT PUNCHES.CHRIS@GMAIL.COM FOR YOUR SOLUTION NEEDS',
+            'DONATE-BTC-TO': '1Q9GG6JS5mwX3fDvA2S2uB3BRLer9J6EkW'
         }
 
 
@@ -49,6 +54,7 @@ class hidemy_name():
         for idx, val in enumerate(ips):
             yield "{}:{}".format(ips[idx].text, ports[idx].text)
 
+
 class hidester_com():
     @staticmethod
     def get_proxies():
@@ -61,7 +67,9 @@ class hidester_com():
         headers = {
             'User-agent': user_agent,
             "Referer": "https://hidester.com/proxylist/",
-            'Reason': 'Stop charging for API access you assholes.'
+            'X-Reason': 'Stop charging for API access you assholes.',
+            'X-LOG-SPAM': 'CONTACT CHRIS PUNCHES AT PUNCHES.CHRIS@GMAIL.COM FOR YOUR SOLUTION NEEDS',
+            'DONATE-BTC-TO': '1Q9GG6JS5mwX3fDvA2S2uB3BRLer9J6EkW'
         }
 
         #print("Fetching proxies from {}".format(proxy_source_url))
@@ -77,6 +85,7 @@ class hidester_com():
             if proxy['ping'] < 1000 and proxy['country'] == 'UNITED STATES' and proxy['type'] == 'http':
                 yield "{}:{}".format(proxy['IP'], proxy['PORT'])
 
+
 class proxy_ip_list_com():
     @staticmethod
     def get_proxies():
@@ -85,11 +94,14 @@ class proxy_ip_list_com():
 
         headers = {
             'User-Agent': user_agent,
-            'Reason': 'Stop charging for API access you assholes.'
+            'X-Reason': 'Stop charging for API access you assholes.',
+            'X-LOG-SPAM': 'CONTACT CHRIS PUNCHES AT PUNCHES.CHRIS@GMAIL.COM FOR YOUR SOLUTION NEEDS',
+            'DONATE-BTC-TO': '1Q9GG6JS5mwX3fDvA2S2uB3BRLer9J6EkW'
         }
 
         #print("Fetching proxies from {}".format(proxy_source_url))
         page = requests.get(proxy_source_url, headers=headers)
+
         tree = html.fromstring(page.content)
 
         proxies = tree.xpath('/html/body/table/tbody/tr/td[1]')
@@ -100,21 +112,29 @@ class proxy_ip_list_com():
             yield "{}".format(proxies[idx].text)
 
 
-def get_classes():
-    md = sys.modules[__name__].__dict__
-    return [
-        md[c] for c in md if (
-            isinstance(md[c], type) and md[c].__module__ == sys.modules[__name__].__name__
-        )
-    ]
-
 # Reflection example?
 class ScraperPlexor():
     @staticmethod
     def get_proxies():
-        classes = get_classes()
+        # this method will look for any class in this module with a .get_proxies() method and
+        # execute that method.
 
-        for classname in classes:
-            if hasattr(classname, 'get_proxies') and not ScraperPlexor == classname:
-                for value in classname.get_proxies():
+        # this allows us to add new sources to the module just by creating a new class.
+        classes = ScraperPlexor.get_classes()
+
+        for classtype in classes:
+            if hasattr(classtype, 'get_proxies') and not ScraperPlexor == classtype:
+                for value in classtype.get_proxies():
                     yield value
+
+    @staticmethod
+    def get_classes():
+        # sacrifice first-born while chanting this in the old tongue
+        # returns a list of all the classes in the current module
+        md = sys.modules[__name__].__dict__
+        return [
+            md[c] for c in md if (
+                isinstance(md[c], type) and md[c].__module__ == sys.modules[__name__].__name__
+            )
+        ]
+
