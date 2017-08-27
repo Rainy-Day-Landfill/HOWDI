@@ -23,7 +23,7 @@ class awmproxy_net:
         }
 
 
-        print("[II] [{}]\tFetching proxy list.".format(source_identifier))
+        print("[II] [{}] Fetching proxy list.".format(source_identifier))
 
         page = requests.get(proxy_source_url, headers=headers, cookies=cookie_jar)
         tree = html.fromstring(page.content)
@@ -32,7 +32,7 @@ class awmproxy_net:
         country = tree.xpath('//*[@class="podbor"]/tr/td[3]')
 
 
-        print("[II] [{}]\tFound {} proxies.".format(source_identifier, len(ips)))
+        print("[II] [{}] Found {} proxies.".format(source_identifier, len(ips)))
 
         for idx, val in enumerate(ips):
             if ips[idx].text is not None:
@@ -62,7 +62,7 @@ class sslproxies_org():
             'X-LOG-SPAM': 'CONTACT CHRIS PUNCHES AT PUNCHES.CHRIS@GMAIL.COM FOR YOUR SOLUTION NEEDS',
             'DONATE-BTC-TO': '1Q9GG6JS5mwX3fDvA2S2uB3BRLer9J6EkW'
         }
-        print("[II] [{}]\tFetching proxy list.".format(source_identifier))
+        print("[II] [{}] Fetching proxy list.".format(source_identifier))
 
         page = requests.get(proxy_source_url, headers=headers)
         tree = html.fromstring(page.content)
@@ -70,7 +70,7 @@ class sslproxies_org():
         ips = tree.xpath('//*[@id="proxylisttable"]/tbody/tr/td[1]')
         ports = tree.xpath('//*[@id="proxylisttable"]/tbody/tr/td[2]')
         country_codes = tree.xpath('//*[@id="proxylisttable"]/tbody/tr/td[3]')
-        print("[II] [{}]\tFound {} proxies.".format(source_identifier, len(ips)))
+        print("[II] [{}] Found {} proxies.".format(source_identifier, len(ips)))
 
         for idx, val in enumerate(ips):
             if country_codes[idx].text == "US":
@@ -91,14 +91,14 @@ class hidemy_name():
             'DONATE-BTC-TO': '1Q9GG6JS5mwX3fDvA2S2uB3BRLer9J6EkW'
         }
 
-        print("[II] [{}]\tFetching proxy list.".format(source_identifier))
+        print("[II] [{}] Fetching proxy list.".format(source_identifier))
         page = requests.get(proxy_source_url, headers=headers)
         tree = html.fromstring(page.content)
 
         ips = tree.xpath('//*[@id="content-section"]/section[1]/div/table/tbody/tr/td[1]')
         ports = tree.xpath('//*[@id="content-section"]/section[1]/div/table/tbody/tr/td[2]')
 
-        print("[II] [{}]\tFound {} proxies.".format(source_identifier, len(ips)))
+        print("[II] [{}] Found {} proxies.".format(source_identifier, len(ips)))
 
         for idx, val in enumerate(ips):
             yield "{}:{}".format(ips[idx].text, ports[idx].text)
@@ -121,7 +121,7 @@ class hidester_com():
             'X-LOG-SPAM': 'CONTACT CHRIS PUNCHES AT PUNCHES.CHRIS@GMAIL.COM FOR YOUR SOLUTION NEEDS',
             'DONATE-BTC-TO': '1Q9GG6JS5mwX3fDvA2S2uB3BRLer9J6EkW'
         }
-        print("[II] [{}]\tFetching proxy list.".format(source_identifier))
+        print("[II] [{}] Fetching proxy list.".format(source_identifier))
 
         # print("Fetching proxies from {}".format(proxy_source_url))
         page = requests.get(proxy_source_url, headers=headers, verify=True)
@@ -130,7 +130,7 @@ class hidester_com():
 
         # not accurate -- should be presenting instead the number of filtered ones
         # print("Found {} proxies.".format(len(json_proxies)))
-        print("[II] [{}]\tFound {} proxies.".format(source_identifier, len(json_proxies)))
+        print("[II] [{}] Found {} proxies.".format(source_identifier, len(json_proxies)))
 
         for proxy in json_proxies:
             # print(proxy)
@@ -151,7 +151,7 @@ class proxy_ip_list_com():
             'X-LOG-SPAM': 'CONTACT CHRIS PUNCHES AT PUNCHES.CHRIS@GMAIL.COM FOR YOUR SOLUTION NEEDS',
             'DONATE-BTC-TO': '1Q9GG6JS5mwX3fDvA2S2uB3BRLer9J6EkW'
         }
-        print("[II] [{}]\tFetching proxy list.".format(source_identifier))
+        print("[II] [{}] Fetching proxy list.".format(source_identifier))
 
         # print("Fetching proxies from {}".format(proxy_source_url))
         page = requests.get(proxy_source_url, headers=headers)
@@ -161,7 +161,7 @@ class proxy_ip_list_com():
         proxies = tree.xpath('/html/body/table/tbody/tr/td[1]')
 
         # print("Found {} proxies.".format(len(proxies)))
-        print("[II] [{}]\tFound {} proxies.".format(source_identifier, len(proxies)))
+        print("[II] [{}] Found {} proxies.".format(source_identifier, len(proxies)))
 
         for idx, val in enumerate(proxies):
             yield "{}".format(proxies[idx].text)

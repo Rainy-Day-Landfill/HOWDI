@@ -70,7 +70,7 @@ class ProxyServer:
                 try:
                     self.data = self.s.recv(buffer_size)
                 except Exception as e:
-                    print("[EE] {}".format(e))
+                    print("[EE] [proxy_server] {}".format(e))
                     self.server.close()
                     return
 
@@ -89,18 +89,18 @@ class ProxyServer:
         forward_to = ( self.upstream['host'], self.upstream['port'] )
 
         if forward:
-            print("[II] [{}:{}] connected".format(clientaddr[0], clientaddr[1]) )
+            print("[II] [proxy_server] [{}:{}] connected".format(clientaddr[0], clientaddr[1]) )
             self.input_list.append(clientsock)
             self.input_list.append(forward)
             self.channel[clientsock] = forward
             self.channel[forward] = clientsock
         else:
-            print("[EE] [{}:{}] Can't establish connection".format(self.upstream['host'], self.upstream['port']))
-            print("[EE] [{}:{}] Closing listener.", clientaddr[0], clientaddr[1])
+            print("[EE] [proxy_server]  [{}:{}] Can't establish connection".format(self.upstream['host'], self.upstream['port']))
+            print("[EE] [proxy_server]  [{}:{}] Closing listener.", clientaddr[0], clientaddr[1])
             clientsock.close()
 
     def on_close(self):
-        print("[WW] [{}:{}] disconnected".format(self.s.getpeername()[0], self.s.getpeername()[1]))
+        print("[WW] [proxy_server]  [{}:{}] disconnected".format(self.s.getpeername()[0], self.s.getpeername()[1]))
         #remove objects from input_list
         self.input_list.remove(self.s)
         self.input_list.remove(self.channel[self.s])
