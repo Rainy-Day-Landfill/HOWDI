@@ -96,23 +96,24 @@ class ProxyServer:
             self.channel[forward] = clientsock
         else:
             print("[EE] [proxy_server]  [{}:{}] Can't establish connection".format(self.upstream['host'], self.upstream['port']))
-            print("[EE] [proxy_server]  [{}:{}] Closing listener.", clientaddr[0], clientaddr[1])
+            print("[EE] [proxy_server]  [{}:{}] Closing listener.".format(clientaddr[0], clientaddr[1]))
             clientsock.close()
 
     def on_close(self):
         print("[WW] [proxy_server]  [{}:{}] disconnected".format(self.s.getpeername()[0], self.s.getpeername()[1]))
-        #remove objects from input_list
-        self.input_list.remove(self.s)
-        self.input_list.remove(self.channel[self.s])
-        out = self.channel[self.s]
-        # close the connection with client
-        self.channel[out].close()  # equivalent to do self.s.close()
-        # close the connection with remote server
-        self.channel[self.s].close()
-        # delete both objects from channel dict
-        del self.channel[out]
-        del self.channel[self.s]
-        self.server.close()
+        if not self.s.getpeername()[0] == "localhost" or not self.s.getpeername()[0] == "127.0.0.1":
+            #remove objects from input_list
+            self.input_list.remove(self.s)
+            self.input_list.remove(self.channel[self.s])
+            out = self.channel[self.s]
+            # close the connection with client
+            self.channel[out].close()  # equivalent to do self.s.close()
+            # close the connection with remote server
+            self.channel[self.s].close()
+            # delete both objects from channel dict
+            del self.channel[out]
+            del self.channel[self.s]
+            self.server.close()
 
     def on_recv(self):
         data = self.data
