@@ -1,5 +1,5 @@
 # HTTP Operations With Dynamic Input.
-Use responsibly.
+This is a browser IP anonymizer that pulls its proxies from various lists, then sets up an L4 bound to a local port to relay to the upstream proxies that it finds.  Use responsibly.
 
 # Usage
 It's literally so easy to use that if you can't figure out how to use it than you shouldn't be using it.
