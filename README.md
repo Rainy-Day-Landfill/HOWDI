@@ -1,4 +1,4 @@
-# HTTP Anonymizer utilizing dynamic lists.
+# HTTP Operations With Dynamic Input.
 Use responsibly.
 
 # Usage
