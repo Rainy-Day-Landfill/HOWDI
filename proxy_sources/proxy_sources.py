@@ -14,7 +14,7 @@ class awmproxy_net:
         source_identifier = urlsplit(proxy_source_url).netloc
 
         # expires in 2065 AD
-        cookie_jar = {"freeproxy_key": "0494348348"}
+        cookie_jar = {"freeproxy_key": "9993127615"}
 
         headers = {
             'X-LOG-SPAM': 'CONTACT CHRIS PUNCHES AT PUNCHES.CHRIS@GMAIL.COM FOR YOUR SOLUTION NEEDS',
