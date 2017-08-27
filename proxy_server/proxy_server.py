@@ -102,6 +102,7 @@ class ProxyServer:
     def on_close(self):
         print("[WW] [proxy_server]  [{}:{}] disconnected".format(self.s.getpeername()[0], self.s.getpeername()[1]))
         if not self.s.getpeername()[0] == "localhost" or not self.s.getpeername()[0] == "127.0.0.1":
+            print("[WW] [proxy_server] [{}:{}] Closing listener".format(self.localaddress['host'], self.localaddress['port']))
             #remove objects from input_list
             self.input_list.remove(self.s)
             self.input_list.remove(self.channel[self.s])
